@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import {
   loadProvider,
   loadNetwork,
-  loadAccount,
   loadTokens,
   loadExchange,
+  loadAccount,
 } from "../store/interactions";
 import config from "../config.json";
 import Navbar from "./Navbar";
@@ -18,14 +18,18 @@ function App() {
     const provider = loadProvider(dispatch);
     //Fetch current network's chainId
     const chainId = await loadNetwork(provider, dispatch);
-    //Fetch current account and balance from Metamask
-    loadAccount(provider, dispatch);
-
+    //Reload page when network changes
+    window.ethereum.on("chainChanged", () => {
+      window.location.reload();
+    });
+    //Fetch current account & balance from Metamask when changed
+    window.ethereum.on("accountsChanged", () => {
+      loadAccount(provider, dispatch);
+    });
     //Load token smart contracts
     const rideToken = config[chainId].rideToken;
     const mETH = config[chainId].mETH;
     await loadTokens(provider, [rideToken.address, mETH.address], dispatch);
-
     //Load exchange smart contracts
     const exchangeConfig = config[chainId].exchange;
     await loadExchange(provider, exchangeConfig.address, dispatch);

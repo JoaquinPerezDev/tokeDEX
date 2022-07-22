@@ -1,9 +1,29 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Blockies from "react-blockies";
 import logo from "../assets/coins.png";
+import eth from "../assets/eth.svg";
+import { loadAccount } from "../store/interactions";
+import config from "../config.json";
+
 
 const Navbar = () => {
+  const provider = useSelector((state) => state.provider.connection);
+  const chainId = useSelector((state) => state.provider.chainId);
   const account = useSelector((state) => state.provider.account);
   const balance = useSelector((state) => state.provider.balance);
+  const dispatch = useDispatch();
+
+  const connectHandler = async () => {
+    //Fetch current account and balance from Metamask
+    await loadAccount(provider, dispatch);
+  };
+
+  const networkHandler = async (e) => {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: e.target.value }],
+    });
+  };
 
   return (
     <div className="exchange__header grid">
@@ -11,7 +31,23 @@ const Navbar = () => {
         <img src={logo} className="logo" alt="logo" />
         <h1>TokeDEX</h1>
       </div>
-      <div className="exchange__header--networks flex"></div>
+      <div className="exchange__header--networks flex">
+        <img src={eth} alt="ETH Logo" className="ETH Logo" />
+        {chainId && (
+          <select
+            name="networks"
+            id="networks"
+            value={config[chainId] ? `0x${chainId.toString(16)}` : `0`}
+            onChange={networkHandler}
+          >
+            <option value="{}" disabled>
+              Select Network
+            </option>
+            <option value="0x7A69">Localhost</option>
+            <option value="0x2a">Kovan</option>
+          </select>
+        )}
+      </div>
       <div className="exchange__header--account flex">
         {balance ? (
           <p>
@@ -25,11 +61,26 @@ const Navbar = () => {
         )}
 
         {account ? (
-          <a href="*">
+          <a
+            href={config[chainId] ? `${config[chainId].explorerURL}/address/${account}` : `#`}
+            target="_blank"
+            rel="noreferrer"
+          >
             {account.slice(0, 6)}...{account.slice(38, 42)}
+            <Blockies
+              seed={account}
+              size={10}
+              scale={3}
+              color="#2187D0"
+              bgColor="#F1F2F9"
+              spotColor="#767F92"
+              className="identicon"
+            />
           </a>
         ) : (
-          <a href="*">Connect Wallet</a>
+          <button className="button" onClick={connectHandler}>
+            Connect Wallet
+          </button>
         )}
       </div>
     </div>
