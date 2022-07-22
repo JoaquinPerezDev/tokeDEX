@@ -21,7 +21,7 @@ export const loadAccount = async (provider, dispatch) => {
     method: "eth_requestAccounts"
   });
   const account = ethers.utils.getAddress(accounts[0]);
-  dispatch({ type: "ACOUNT_LOADED", account });
+  dispatch({ type: "ACCOUNT_LOADED", account });
 
   let balance = await provider.getBalance(account);
   balance = ethers.utils.formatEther(balance);

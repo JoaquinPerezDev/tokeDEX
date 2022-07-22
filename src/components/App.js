@@ -19,7 +19,7 @@ function App() {
     //Fetch current network's chainId
     const chainId = await loadNetwork(provider, dispatch);
     //Fetch current account and balance from Metamask
-    const account = await loadAccount(provider, dispatch);
+    loadAccount(provider, dispatch);
 
     //Load token smart contracts
     const rideToken = config[chainId].rideToken;
