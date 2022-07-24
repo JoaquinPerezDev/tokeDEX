@@ -23,6 +23,7 @@ const Navbar = () => {
       method: "wallet_switchEthereumChain",
       params: [{ chainId: e.target.value }],
     });
+    console.log('works')
   };
 
   return (
@@ -33,6 +34,7 @@ const Navbar = () => {
       </div>
       <div className="exchange__header--networks flex">
         <img src={eth} alt="ETH Logo" className="ETH Logo" />
+
         {chainId && (
           <select
             name="networks"
@@ -40,9 +42,7 @@ const Navbar = () => {
             value={config[chainId] ? `0x${chainId.toString(16)}` : `0`}
             onChange={networkHandler}
           >
-            <option value="{}" disabled>
-              Select Network
-            </option>
+            <option value="0" disabled>Select Network</option>
             <option value="0x7A69">Localhost</option>
             <option value="0x2a">Kovan</option>
           </select>
