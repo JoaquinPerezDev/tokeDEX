@@ -13,6 +13,7 @@ const Navbar = () => {
   const balance = useSelector((state) => state.provider.balance);
   const dispatch = useDispatch();
 
+
   const connectHandler = async () => {
     //Fetch current account and balance from Metamask
     await loadAccount(provider, dispatch);
@@ -21,9 +22,8 @@ const Navbar = () => {
   const networkHandler = async (e) => {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: e.target.value }],
+      params: [{ chainId: e.target.value }]
     });
-    console.log('works')
   };
 
   return (

@@ -28,9 +28,9 @@ function App() {
       loadAccount(provider, dispatch);
     });
     //Load token smart contracts
-    const rideToken = config[chainId].rideToken;
+    const RIDE = config[chainId].RIDE;
     const mETH = config[chainId].mETH;
-    await loadTokens(provider, [rideToken.address, mETH.address], dispatch);
+    await loadTokens(provider, [RIDE.address, mETH.address], dispatch);
     //Load exchange smart contracts
     const exchangeConfig = config[chainId].exchange;
     await loadExchange(provider, exchangeConfig.address, dispatch);
