@@ -22,14 +22,14 @@ const Navbar = () => {
   const networkHandler = async (e) => {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: e.target.value }]
+      params: [{ chainId: e.target.value }],
     });
   };
 
   return (
     <div className="exchange__header grid">
       <div className="exchange__header--brand flex">
-        <img src={logo} className="logo" alt="logo" />
+        <img src={logo} className="logo" alt="TokeDEX logo" />
         <h1>TokeDEX</h1>
       </div>
       <div className="exchange__header--networks flex">

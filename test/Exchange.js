@@ -23,7 +23,7 @@ describe("Exchange", () => {
     const Token = await ethers.getContractFactory("Token");
 
     token1 = await Token.deploy("Riderian", "RIDE", "1000000");
-    token2 = await Token.deploy("mock Dai", "mDAI", "1000000");
+    token2 = await Token.deploy("Mock Dai", "mDAI", "1000000");
 
     accounts = await ethers.getSigners();
     deployer = accounts[0];
@@ -68,13 +68,10 @@ describe("Exchange", () => {
 
       it("Tracks the token deposit", async () => {
         expect(await token1.balanceOf(exchange.address)).to.equal(amount);
-        expect(await exchange.tokens(token1.address, user1.address)).to.equal(
-          amount
-        );
-        expect(
-          await exchange.balanceOf(token1.address, user1.address)
-        ).to.equal(amount);
+        expect(await exchange.tokens(token1.address, user1.address)).to.equal(amount);
+        expect(await exchange.balanceOf(token1.address, user1.address)).to.equal(amount);
       });
+      
       it("Emits a deposit event", async () => {
         const event = result.events[1];
         expect(event.event).to.equal("Deposit");

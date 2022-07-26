@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import config from "../config.json";
 import {
   loadProvider,
   loadNetwork,
@@ -7,7 +8,7 @@ import {
   loadExchange,
   loadAccount,
 } from "../store/interactions";
-import config from "../config.json";
+
 import Navbar from "./Navbar";
 import Markets from "./Markets";
 

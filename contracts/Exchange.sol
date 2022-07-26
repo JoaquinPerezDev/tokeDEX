@@ -14,7 +14,12 @@ contract Exchange {
     mapping(uint256 => bool) public orderCancelled;
     mapping(uint256 => bool) public orderFilled;
 
-    event Deposit(address token, address user, uint256 amount, uint256 balance);
+    event Deposit(
+        address token, 
+        address user, 
+        uint256 amount, 
+        uint256 balance
+    );
     event Withdraw(
         address token,
         address user,
@@ -190,11 +195,13 @@ contract Exchange {
         tokens[_tokenGet][msg.sender] =
             tokens[_tokenGet][msg.sender] -
             (_amountGet + _feeAmount);
+
         tokens[_tokenGet][_user] = tokens[_tokenGet][_user] + _amountGet;
         //Transfers fee to fee account
         tokens[_tokenGet][feeAccount] =
             tokens[_tokenGet][feeAccount] +
             _feeAmount;
+            
         tokens[_tokenGive][_user] = tokens[_tokenGive][_user] - _amountGive;
         tokens[_tokenGive][msg.sender] =
             tokens[_tokenGive][msg.sender] +
