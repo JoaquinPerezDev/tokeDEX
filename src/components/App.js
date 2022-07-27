@@ -11,6 +11,7 @@ import {
 
 import Navbar from "./Navbar";
 import Markets from "./Markets";
+import { chain } from "lodash";
 
 function App() {
   const dispatch = useDispatch();
@@ -29,9 +30,9 @@ function App() {
       loadAccount(provider, dispatch);
     });
     //Load token smart contracts
-    const RIDE = config[chainId].RIDE;
+    const shr = config[chainId].shr;
     const mETH = config[chainId].mETH;
-    await loadTokens(provider, [RIDE.address, mETH.address], dispatch);
+    await loadTokens(provider, [shr.address, mETH.address], dispatch);
     //Load exchange smart contracts
     const exchangeConfig = config[chainId].exchange;
     await loadExchange(provider, exchangeConfig.address, dispatch);

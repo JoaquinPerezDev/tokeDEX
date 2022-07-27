@@ -14,13 +14,13 @@ async function main() {
   );
 
   //Deploy token smart contract for every token we want to generate.
-  const rideToken = await Token.deploy("Riderian", "RIDE", "1000000");
-  await rideToken.deployed();
-  console.log(`Riderian token deployed to: ${rideToken.address}`);
+  const shr = await Token.deploy("Shard", "shr", "1000000");
+  await shr.deployed();
+  console.log(`Shard token deployed to: ${shr.address}`);
 
-  const mEth = await Token.deploy("mETH", "mETH", "1000000");
-  await mEth.deployed();
-  console.log(`mETH token deployed to: ${mEth.address}`);
+  const mETH = await Token.deploy("mETH", "mETH", "1000000");
+  await mETH.deployed();
+  console.log(`mETH token deployed to: ${mETH.address}`);
 
   const mDAI = await Token.deploy("mDAI", "mDAI", "1000000");
   await mDAI.deployed();

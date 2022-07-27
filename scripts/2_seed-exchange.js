@@ -5,7 +5,6 @@
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
 const { ethers } = require("hardhat");
-const hre = require("hardhat");
 const config = require("../src/config.json");
 
 const tokens = (n) => {
@@ -25,11 +24,8 @@ async function main() {
   console.log("Using chainId:", chainId);
 
   //Fetch deployed tokens
-  const rideToken = await ethers.getContractAt(
-    "Token",
-    config[chainId].rideToken.address
-  );
-  console.log(`Riderian Token fetched: ${rideToken.address}`);
+  const shr = await ethers.getContractAt("Token", config[chainId].shr.address);
+  console.log(`Shard Token fetched: ${shr.address}`);
 
   const mETH = await ethers.getContractAt(
     "Token",
@@ -67,19 +63,15 @@ async function main() {
   const user2 = accounts[1];
   amount = tokens(10000);
 
-  //User1 approves 10k Riderian Tokens
-  transaction = await rideToken
-    .connect(user1)
-    .approve(exchange.address, amount);
+  //User1 approves 10k Shard Tokens
+  transaction = await shr.connect(user1).approve(exchange.address, amount);
   await transaction.wait();
   console.log(`Approved ${amount} tokens from ${user1.address}`);
 
-  //User1 deposits 10k Riderian Tokens
-  transaction = await exchange
-    .connect(user1)
-    .depositToken(rideToken.address, amount);
+  //User1 deposits 10k Shard Tokens
+  transaction = await exchange.connect(user1).depositToken(shr.address, amount);
   await transaction.wait();
-  console.log(`Deposited ${amount} of Riderian tokens from ${user1.address}\n`);
+  console.log(`Deposited ${amount} of Shard tokens from ${user1.address}\n`);
 
   //User2 approves mETH
   transaction = await mETH.connect(user2).approve(exchange.address, amount);
@@ -97,7 +89,7 @@ async function main() {
   let orderId;
   transaction = await exchange
     .connect(user1)
-    .makeOrder(mETH.address, tokens(100), rideToken.address, tokens(5));
+    .makeOrder(mETH.address, tokens(100), shr.address, tokens(5));
   result = await transaction.wait();
   console.log(`Made order from ${user1.address}`);
 
@@ -114,7 +106,7 @@ async function main() {
   //User1 makes order
   transaction = await exchange
     .connect(user1)
-    .makeOrder(mETH.address, tokens(100), rideToken.address, tokens(10));
+    .makeOrder(mETH.address, tokens(100), shr.address, tokens(10));
   result = await transaction.wait();
   console.log(`Made order from ${user1.address}`);
 
@@ -130,7 +122,7 @@ async function main() {
   //User1 makes another order
   transaction = await exchange
     .connect(user1)
-    .makeOrder(mETH.address, tokens(50), rideToken.address, tokens(15));
+    .makeOrder(mETH.address, tokens(50), shr.address, tokens(15));
   result = await transaction.wait();
   console.log(`Made order from ${user1.address}`);
 
@@ -150,7 +142,7 @@ async function main() {
   for (let i = 1; i <= 10; i++) {
     transaction = await exchange
       .connect(user1)
-      .makeOrder(mETH.address, tokens(10 * i), rideToken.address, tokens(10));
+      .makeOrder(mETH.address, tokens(10 * i), shr.address, tokens(10));
     result = await transaction.wait();
     console.log(`Made order from ${user1.address}`);
 
@@ -161,7 +153,7 @@ async function main() {
   for (let i = 1; i <= 10; i++) {
     transaction = await exchange
       .connect(user2)
-      .makeOrder(rideToken.address, tokens(10), mETH.address, tokens(10 * i));
+      .makeOrder(shr.address, tokens(10), mETH.address, tokens(10 * i));
     result = await transaction.wait();
     console.log(`Make order from ${user2.address}`);
 

@@ -9,7 +9,7 @@ describe("Token contract", () => {
 
   beforeEach(async () => {
     const Token = await ethers.getContractFactory("Token");
-    token = await Token.deploy("Riderian", "RIDE", "1000000");
+    token = await Token.deploy("Shard", "shr", "1000000");
     accounts = await ethers.getSigners();
     deployer = accounts[0];
     receiver = accounts[1];
@@ -17,8 +17,8 @@ describe("Token contract", () => {
   });
 
   describe("Deployment", () => {
-    const name = "Riderian";
-    const symbol = "RIDE";
+    const name = "Shard";
+    const symbol = "shr";
     const decimals = "18";
     const totalSupply = tokens("1000000");
 

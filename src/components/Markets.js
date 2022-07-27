@@ -6,9 +6,8 @@ const Markets = () => {
   const provider = useSelector((state) => state.provider.connection);
   const chainId = useSelector((state) => state.provider.chainId);
   const dispatch = useDispatch();
-
   const marketHandler = async (e) => {
-    loadTokens(provider, (e.target.value).split(","), dispatch);
+    loadTokens(provider, e.target.value.split(","), dispatch);
   };
 
   return (
@@ -20,14 +19,14 @@ const Markets = () => {
       {chainId && config[chainId] ? (
         <select name="markets" id="markets" onChange={marketHandler}>
           <option
-            value={`${config[chainId].RIDE.address}, ${config[chainId].mETH.address}`}
+            value={`${config[chainId].shr.address},${config[chainId].mETH.address}`}
           >
-            RIDE / mETH
+            SHR / mETH
           </option>
           <option
-            value={`${config[chainId].RIDE.address}, ${config[chainId].mDAI.address}`}
+            value={`${config[chainId].shr.address},${config[chainId].mDAI.address}`}
           >
-            RIDE / mDAI
+            SHR / mDAI
           </option>
         </select>
       ) : (
