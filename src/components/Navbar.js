@@ -21,8 +21,9 @@ const Navbar = () => {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: e.target.value }],
-    });
-  };
+    })
+  }
+
   return (
     <div className="exchange__header grid">
       <div className="exchange__header--brand flex">

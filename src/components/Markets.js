@@ -16,7 +16,8 @@ const Markets = () => {
         <h2>Select Market</h2>
       </div>
 
-      {chainId && config[chainId] ? (
+      {chainId &&
+      config[chainId] ? (
         <select name="markets" id="markets" onChange={marketHandler}>
           <option
             value={`${config[chainId].shr.address},${config[chainId].mETH.address}`}
@@ -34,7 +35,6 @@ const Markets = () => {
           <p>Not deployed to network</p>
         </div>
       )}
-
       <hr />
     </div>
   );

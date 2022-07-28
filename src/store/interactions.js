@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import TOKEN_ABI from "../abis/Token.json";
 import EXCHANGE_ABI from "../abis/Exchange.json";
+import { exchange } from "./reducers";
 
 export const loadProvider = (dispatch) => {
   const connection = new ethers.providers.Web3Provider(window.ethereum);
@@ -50,4 +51,64 @@ export const loadExchange = async (provider, address, dispatch) => {
   dispatch({ type: "EXCHANGE_LOADED", exchange });
 
   return exchange;
+};
+
+export const subscribeToEvents = (exchange, dispatch) => {
+  exchange.on("Deposit", (token, user, amount, balance, event) => {
+    dispatch({ type: "TRANSFER_SUCCESS", event });
+  });
+};
+//Load user balances (wallet and exchange balances)
+
+export const loadBalances = async (exchange, tokens, account, dispatch) => {
+  let balance = ethers.utils.formatUnits(
+    await tokens[0].balanceOf(account),
+    18
+  );
+  dispatch({ type: "TOKEN_1_BALANCE_LOADED", balance });
+
+  balance = ethers.utils.formatUnits(
+    await exchange.balanceOf(tokens[0].address, account),
+    18
+  );
+  dispatch({ type: "EXCHANGE_TOKEN_1_BALANCE_LOADED", balance });
+
+  balance = ethers.utils.formatUnits(await tokens[1].balanceOf(account), 18);
+  dispatch({ type: "TOKEN_2_BALANCE_LOADED", balance });
+
+  balance = ethers.utils.formatUnits(
+    await exchange.balanceOf(tokens[1].address, account),
+    18
+  );
+  dispatch({ type: "EXCHANGE_TOKEN_2_BALANCE_LOADED", balance });
+};
+
+// Transfer tokens(deposits and withwrawals)
+export const transferTokens = async (
+  provider,
+  exchange,
+  transferType,
+  token,
+  amount,
+  dispatch
+) => {
+  let transaction;
+
+  dispatch({ type: "TRANSFER_REQUEST" });
+
+  try {
+    const signer = await provider.getSigner();
+    const amountToTransfer = ethers.utils.parseUnits(amount.toString(), 18);
+
+    transaction = await token
+      .connect(signer)
+      .approve(exchange.address, amountToTransfer);
+    await transaction.wait();
+    transaction = await exchange
+      .connect(signer)
+      .depositToken(token.address, amountToTransfer);
+    await transaction.wait();
+  } catch (error) {
+    dispatch({ type: "TRANSFER_FAIL" });
+  }
 };

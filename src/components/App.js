@@ -1,46 +1,52 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import config from "../config.json";
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import config from "../config.json"
 import {
   loadProvider,
   loadNetwork,
   loadTokens,
   loadExchange,
   loadAccount,
-} from "../store/interactions";
+  subscribeToEvents
+} from "../store/interactions"
 
-import Navbar from "./Navbar";
-import Markets from "./Markets";
-import { chain } from "lodash";
+import Navbar from "./Navbar"
+import Markets from "./Markets"
+import Balance from "./Balance"
+
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const loadBlockchainData = async () => {
     //Connect ethers to the blockchain
-    const provider = loadProvider(dispatch);
+    const provider = loadProvider(dispatch)
     //Fetch current network's chainId
-    const chainId = await loadNetwork(provider, dispatch);
+    const chainId = await loadNetwork(provider, dispatch)
     //Reload page when network changes
     window.ethereum.on("chainChanged", () => {
-      window.location.reload();
-    });
+      window.location.reload()
+    })
     //Fetch current account & balance from Metamask when changed
     window.ethereum.on("accountsChanged", () => {
-      loadAccount(provider, dispatch);
-    });
+      loadAccount(provider, dispatch)
+    })
     //Load token smart contracts
-    const shr = config[chainId].shr;
-    const mETH = config[chainId].mETH;
-    await loadTokens(provider, [shr.address, mETH.address], dispatch);
+    const shr = config[chainId].shr
+    const mETH = config[chainId].mETH
+    await loadTokens(provider,[shr.address, mETH.address], dispatch)
     //Load exchange smart contracts
-    const exchangeConfig = config[chainId].exchange;
-    await loadExchange(provider, exchangeConfig.address, dispatch);
+    const exchangeConfig = config[chainId].exchange
+   
+    const exchange = await loadExchange(provider, exchangeConfig.address, dispatch)
+
+    //Listen to events
+    subscribeToEvents(exchange, dispatch)
   };
 
   useEffect(() => {
-    loadBlockchainData();
-  });
+    loadBlockchainData()
+  })
 
   return (
     <div>
@@ -50,7 +56,7 @@ function App() {
           {/* Markets */}
           <Markets />
           {/* Balance */}
-
+          <Balance />
           {/* Order */}
         </section>
         <section className="exchange__section--right grid">
@@ -66,7 +72,7 @@ function App() {
 
       {/* Alert */}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
