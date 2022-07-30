@@ -1,6 +1,6 @@
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import config from "../config.json"
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import config from "../config.json";
 import {
   loadProvider,
   loadNetwork,
@@ -8,51 +8,56 @@ import {
   loadExchange,
   loadAccount,
   subscribeToEvents,
-  loadAllOrders
-} from "../store/interactions"
+  loadAllOrders,
+} from "../store/interactions";
 
-import Navbar from "./Navbar"
-import Markets from "./Markets"
-import Balance from "./Balance"
-import Order from './Order'
-import PriceChart from "./PriceChart"
-import OrderBook from "./OrderBook"
+import Navbar from "./Navbar";
+import Markets from "./Markets";
+import Balance from "./Balance";
+import Order from "./Order";
+import PriceChart from "./PriceChart";
+import Banner from "./Banner";
+import OrderBook from "./OrderBook";
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const loadBlockchainData = async () => {
     //Connect ethers to the blockchain
-    const provider = loadProvider(dispatch)
+    const provider = loadProvider(dispatch);
     //Fetch current network's chainId
-    const chainId = await loadNetwork(provider, dispatch)
+    const chainId = await loadNetwork(provider, dispatch);
     //Reload page when network changes
     window.ethereum.on("chainChanged", () => {
-      window.location.reload()
-    })
+      window.location.reload();
+    });
     //Fetch current account & balance from Metamask when changed
     window.ethereum.on("accountsChanged", () => {
-      loadAccount(provider, dispatch)
-    })
+      loadAccount(provider, dispatch);
+    });
     //Load token smart contracts
-    const shr = config[chainId].shr
-    const mETH = config[chainId].mETH
-    await loadTokens(provider,[shr.address, mETH.address], dispatch)
+    const shr = config[chainId].shr;
+    const mETH = config[chainId].mETH;
+    await loadTokens(provider, [shr.address, mETH.address], dispatch);
     //Load exchange smart contracts
-    const exchangeConfig = config[chainId].exchange
-   
-    const exchange = await loadExchange(provider, exchangeConfig.address, dispatch)
+    const exchangeConfig = config[chainId].exchange;
+
+    const exchange = await loadExchange(
+      provider,
+      exchangeConfig.address,
+      dispatch
+    );
 
     // Fetch all orders: open, filled, cancelled
-    loadAllOrders(provider, exchange, dispatch)
+    loadAllOrders(provider, exchange, dispatch);
 
     //Listen to events
-    subscribeToEvents(exchange, dispatch)
+    subscribeToEvents(exchange, dispatch);
   };
 
   useEffect(() => {
-    loadBlockchainData()
-  })
+    loadBlockchainData();
+  });
 
   return (
     <div>
@@ -64,8 +69,7 @@ function App() {
           <Order />
         </section>
         <section className="exchange__section--right grid">
-          {/* PriceChart */}
-<PriceChart />
+          <PriceChart />
           {/* Transactions */}
 
           {/* Trades */}
@@ -77,7 +81,7 @@ function App() {
 
       {/* Alert */}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
