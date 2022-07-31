@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import TOKEN_ABI from "../abis/Token.json";
 import EXCHANGE_ABI from "../abis/Exchange.json";
+import { exchange } from "./reducers";
 
 export const loadProvider = (dispatch) => {
   const connection = new ethers.providers.Web3Provider(window.ethereum);
@@ -53,6 +54,40 @@ export const loadExchange = async (provider, address, dispatch) => {
 };
 
 export const subscribeToEvents = (exchange, dispatch) => {
+  exchange.on(
+    "Cancel",
+    (
+      id,
+      user,
+      tokenGet,
+      amountGet,
+      tokenGive,
+      amountGive,
+      timestamp,
+      event
+    ) => {
+      const order = event.args;
+      dispatch({ type: "ORDER_CANCEL_SUCCESS", order, event });
+    }
+  );
+  exchange.on(
+    "Trade",
+    (
+      id,
+      user,
+      tokenGet,
+      amountGet,
+      tokenGive,
+      amountGive,
+      creator,
+      timestamp,
+      event
+    ) => {
+      const order = event.args;
+      dispatch({ type: "ORDER_TRADE_SUCCESS", order, event });
+    }
+  );
+
   exchange.on("Deposit", (token, user, amount, balance, event) => {
     dispatch({ type: "TRANSFER_SUCCESS", event });
   });
@@ -116,7 +151,7 @@ export const loadAllOrders = async (provider, exchange, dispatch) => {
   const filledOrders = tradeStream.map((event) => event.args);
 
   dispatch({ type: "FILLED_ORDERS_LOADED", filledOrders });
-  
+
   //Fetch all orders
   const orderStream = await exchange.queryFilter("Order", 0, block);
   const allOrders = orderStream.map((event) => event.args);
@@ -215,3 +250,27 @@ export const makeSellOrder = async (
     dispatch({ type: "NEW_ORDER_FAIL" });
   }
 };
+
+export const cancelOrder = async (provider, exchange, order, dispatch) => {
+  dispatch({ type: "ORDER_CANCEL_REQUEST" });
+
+  try {
+    const signer = await provider.getSigner();
+    const transaction = await exchange.connect(signer).cancelOrder(order.id);
+    await transaction.wait();
+  } catch (error) {
+    dispatch({ type: "ORDER_CANCEL_FAIL" });
+  }
+};
+
+export const fillOrder = async (provider, exchange, order, dispatch) => {
+  dispatch({ type: "ORDER_FILL_REQUEST" });
+
+  try {
+    const signer = await provider.getSigner();
+    const transaction = await exchange.connect(signer).fillOrder(order.id);
+    await transaction.wait();
+  } catch (error) {
+    dispatch({ type: "ORDER_FILL_FAIL" });
+  }
+}
