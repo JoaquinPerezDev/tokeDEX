@@ -155,7 +155,7 @@ const Balance = () => {
               : (e) => withdrawHandler(e, tokens[0])
           }
         >
-          <label htmlFor="token0"></label>
+          <label htmlFor="token0">{symbols && symbols[0]} Amount</label>
           <input
             type="text"
             id="token0"
@@ -175,23 +175,25 @@ const Balance = () => {
       {/* Deposit/Withdraw Component 2 (mETH) */}
 
       <div className="exchange__transfers--form">
-        <div className="flex-between"></div>
-        <p>
-          <small>Token</small>
-          <br />
-          <img src={eth} alt="Token Logo" />
-          {symbols && symbols[1]}
-        </p>
-        <p>
-          <small>Wallet</small>
-          <br />
-          {tokenBalances && tokenBalances[1]}
-        </p>
-        <p>
-          <small>Exchange</small>
-          <br />
-          {exchangeBalances && exchangeBalances[1]}
-        </p>
+        <div className="flex-between">
+          <p>
+            <small>Token</small>
+            <br />
+            <img src={eth} alt="Token Logo" />
+            {symbols && symbols[1]}
+          </p>
+          <p>
+            <small>Wallet</small>
+            <br />
+            {tokenBalances && tokenBalances[1]}
+          </p>
+          <p>
+            <small>Exchange</small>
+            <br />
+            {exchangeBalances && exchangeBalances[1]}
+          </p>
+        </div>
+
         <form
           onSubmit={
             isDeposit
@@ -199,7 +201,7 @@ const Balance = () => {
               : (e) => withdrawHandler(e, tokens[1])
           }
         >
-          <label htmlFor="token1"></label>
+          <label htmlFor="token1">{symbols && symbols[1]} Amount</label>
           <input
             type="text"
             id="token1"

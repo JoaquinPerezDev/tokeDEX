@@ -17,8 +17,9 @@ import Balance from "./Balance";
 import Order from "./Order";
 import PriceChart from "./PriceChart";
 import OrderBook from "./OrderBook";
-import Trades from "./Trades"
-import Transactions from "./Transactions"
+import Trades from "./Trades";
+import Transactions from "./Transactions";
+import Alert from "./Alert";
 
 function App() {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ function App() {
           <OrderBook />
         </section>
       </main>
-      {/* Alert */}
+      <Alert />
     </div>
   );
 }
