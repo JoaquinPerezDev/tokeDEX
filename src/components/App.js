@@ -16,8 +16,8 @@ import Markets from "./Markets";
 import Balance from "./Balance";
 import Order from "./Order";
 import PriceChart from "./PriceChart";
-import Banner from "./Banner";
 import OrderBook from "./OrderBook";
+import Trades from "./Trades"
 
 function App() {
   const dispatch = useDispatch();
@@ -71,14 +71,10 @@ function App() {
         <section className="exchange__section--right grid">
           <PriceChart />
           {/* Transactions */}
-
-          {/* Trades */}
-
-          {/* OrderBook */}
+          <Trades />
           <OrderBook />
         </section>
       </main>
-
       {/* Alert */}
     </div>
   );

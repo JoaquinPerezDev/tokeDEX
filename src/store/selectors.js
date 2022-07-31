@@ -57,6 +57,63 @@ const decorateOrder = (order, tokens) => {
   };
 };
 
+export const filledOrdersSelector = createSelector(
+  filledOrders,
+  tokens,
+  (orders, tokens) => {
+    if (!tokens[0] || !tokens[1]) {
+      return;
+    }
+
+    orders = orders.filter(
+      (o) =>
+        o.tokenGet === tokens[0].address || o.tokenGet === tokens[1].address
+    );
+    orders = orders.filter(
+      (o) =>
+        o.tokenGive === tokens[0].address || o.tokenGive === tokens[1].address
+    );
+    // Sort orders by time ascending for  price comparison
+    orders = orders.sort((a, b) => a.timestamp - b.timestamp);
+    // Decorate the orders
+    orders = decorateFilledOrders(orders, tokens);
+    // Sort orders by date descending for display.
+    orders = orders.sort((a, b) => b.timestamp - a.timestamp);
+
+    return orders;
+  }
+);
+
+const decorateFilledOrders = (orders, tokens) => {
+  let previousOrder = orders[0];
+
+  return orders.map((order) => {
+    order = decorateOrder(order, tokens);
+    order = decorateFilledOrder(order, previousOrder);
+    previousOrder = order;
+    return order;
+  });
+};
+
+const decorateFilledOrder = (order, previousOrder) => {
+  return {
+    ...order,
+    tokenPriceClass: tokenPriceClass(order.tokenPrice, order.id, previousOrder),
+  };
+};
+
+const tokenPriceClass = (tokenPrice, orderId, previousOrder) => {
+  if (previousOrder.id === orderId) {
+    return GREEN;
+  }
+
+  if (previousOrder.tokenPrice <= tokenPrice) {
+    return GREEN;
+  } else {
+    return RED;
+  }
+};
+
 export const orderBookSelector = createSelector(
   openOrders,
   tokens,
@@ -138,17 +195,21 @@ export const priceChartSelector = createSelector(
 
     orders = orders.map((o) => decorateOrder(o, tokens));
 
-    
-    let secondLastOrder, lastOrder
-    [secondLastOrder, lastOrder] = orders.slice(orders.length - 2, orders.length)
+    let secondLastOrder, lastOrder;
+    [secondLastOrder, lastOrder] = orders.slice(
+      orders.length - 2,
+      orders.length
+    );
     const lastPrice = get(lastOrder, "tokenPrice", 0);
-    const secondLastPrice = get(secondLastOrder, "tokenPrice", 0)
+    const secondLastPrice = get(secondLastOrder, "tokenPrice", 0);
     return {
       lastPrice,
-      lastPriceChange: (lastPrice >= secondLastPrice ? "+" : "-"),
-      series: [{
+      lastPriceChange: lastPrice >= secondLastPrice ? "+" : "-",
+      series: [
+        {
           data: buildGraphData(orders),
-        }],
+        },
+      ],
     };
   }
 );
