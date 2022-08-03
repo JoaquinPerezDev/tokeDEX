@@ -16,16 +16,16 @@
   },
   "42": {
     "exchange": {
-      "address": "0x6F155ef46516Deb30192C425A0BD2831944b5686"
+      "address": "0x2358C8291E2ed7BFcfb93C5673D6668861d7BFB1"
     },
     "shr": {
-      "address": "0x80100a2739134e1380406DbebEb4cB6a64Decabc"
+      "address": "0xA8810Abd072F59bf6309B6677B117A371cABEC7B"
     },
     "mETH": {
-      "address": "0xE608687974ce301Df444705BB4db38b4cA07c078"
+      "address": "0x1648Aa6578B459d21dFEC3bf3bf3BD68857DA069"
     },
     "mDAI": {
-      "address": "0x654362b53b228F96Ff85Cb8BFA19e7dc6ca454e3"
+      "address": "0x3F84bA2e987939CCBab6c5a9CA0a99E3C0932D20"
     },
     "explorerURL": "https://kovan.etherscan.io"
   }

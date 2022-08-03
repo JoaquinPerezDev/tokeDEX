@@ -28,7 +28,7 @@ async function main() {
 
   const exchange = await Exchange.deploy(accounts[1].address, 10);
   await exchange.deployed();
-  console.log(`Exchange deployed to: ${exchange.address}`);
+  console.log(`exchange deployed to: ${exchange.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

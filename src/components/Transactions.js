@@ -10,7 +10,7 @@ import Banner from "./Banner";
 
 const Transactions = () => {
   const [showMyOrders, setShowMyOrders] = useState(true);
-  
+
   const provider = useSelector((state) => state.provider.connection);
   const exchange = useSelector((state) => state.exchange.contract);
   const symbols = useSelector((state) => state.tokens.symbols);
@@ -69,11 +69,12 @@ const Transactions = () => {
                     {symbols && symbols[0]}
                     <img src={sort} alt="Sort" />
                   </th>
-                  <th></th>
                   <th>
+                    {" "}
                     {symbols && symbols[0]}/{symbols && symbols[1]}
                     <img src={sort} alt="Sort" />
                   </th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
