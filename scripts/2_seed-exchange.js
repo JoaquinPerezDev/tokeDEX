@@ -49,6 +49,7 @@ async function main() {
   //Give tokens to account[1]
   const sender = accounts[0];
   const receiver = accounts[1];
+  const secondReceiver = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1";
   let amount = tokens(10000);
 
   //User1 transfers 10k mETH
@@ -58,6 +59,20 @@ async function main() {
   console.log(
     `Transferred ${amount} tokens from ${sender.address} to ${receiver.address}\n`
   );
+
+  //User1 deposits 10k Shard Tokens to user3
+  transaction = await mETH.connect(sender).transfer(secondReceiver, amount);
+  await transaction.wait();
+  console.log(
+    `Transferred ${amount} mETH ßtokens from ${receiver.address} to ${secondReceiver}\n`
+  );
+
+  transaction = await shr.connect(sender).transfer(secondReceiver, amount);
+  await transaction.wait();
+  console.log(
+    `Transferred ${amount} shr tokens from ${receiver.address} to ${secondReceiver}\n`
+  );
+
   //Set up exchange users
   const user1 = accounts[0];
   const user2 = accounts[1];
@@ -166,4 +181,4 @@ async function main() {
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
-})
+});
