@@ -14,19 +14,19 @@
     },
     "explorerURL": "#"
   },
-  "42": {
+  "5": {
     "exchange": {
-      "address": "0xcBd4297b838f1896EdF236DCf6152b769EbCD1f8"
+      "address": "0xADBD2a2b2682D70365632c1b1628c3437c3D55Ed"
     },
     "shr": {
-      "address": "0x4e9738916dc3E333A68dbB1012f962cb653DfD8d"
+      "address": "0x0be46c01D73BF3512EF1C0ED8Ab044c81338C22e"
     },
     "mETH": {
-      "address": "0x34CD4bDa83dAfef6D2F59f9252CE7675004ff73d"
+      "address": "0xa86023b8FE9c18eB468162dD838faa422E065f12"
     },
     "mDAI": {
-      "address": "0x73D67c8C73Af3d7975D1997ed8718F97648D1e37"
+      "address": "0xcFF31D3dCf47E227c8B0960DCe0c960ee4FCbFA0"
     },
-    "explorerURL": "https://kovan.etherscan.io"
+    "explorerURL": "https://goerli.etherscan.io/"
   }
 }

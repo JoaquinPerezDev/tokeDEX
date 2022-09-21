@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from "react-redux";
-import Blockies from "react-blockies";
-import logo from "../assets/coins.png";
-import eth from "../assets/eth.svg";
-import { loadAccount } from "../store/interactions";
-import config from "../config.json";
+import { useSelector, useDispatch } from 'react-redux';
+import Blockies from 'react-blockies';
+import logo from '../assets/coins.png';
+import eth from '../assets/eth.svg';
+import { loadAccount } from '../store/interactions';
+import config from '../config.json';
 
 const Navbar = () => {
   const provider = useSelector((state) => state.provider.connection);
@@ -19,10 +19,10 @@ const Navbar = () => {
 
   const networkHandler = async (e) => {
     await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
+      method: 'wallet_switchEthereumChain',
       params: [{ chainId: e.target.value }],
-    })
-  }
+    });
+  };
 
   return (
     <div className="exchange__header grid">
@@ -44,7 +44,7 @@ const Navbar = () => {
               Select Network
             </option>
             <option value="0x7A69">Localhost</option>
-            <option value="0x2a">Kovan</option>
+            <option value="0x5">Goerli</option>
           </select>
         )}
       </div>
